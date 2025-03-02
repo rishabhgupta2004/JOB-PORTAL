@@ -38,7 +38,10 @@ const jobSchema= new mongoose.Schema({
     applications:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'Company',
+    },
+    experienceLevel:{
+        type:String,
     }
     
 },{ timestamps: true });
-export const job=mongoose.model("Job",jobSchema);
+export const Job=mongoose.model("Job",jobSchema);
