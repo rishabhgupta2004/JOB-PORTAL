@@ -8,6 +8,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { USER_API_ENDPOINT } from '@/utils/constant';
 import { toast } from 'sonner';
 import axios from 'axios';
+import { setLoading } from '@/redux/authSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { Loader2 } from 'lucide-react';
 
 const Login = () => {
     const [input, setInput] = useState({
@@ -16,6 +19,8 @@ const Login = () => {
         role: ''
     });
 
+    const { loading } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const changeEventHandler = (e) => {
@@ -25,12 +30,10 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(input);
-
         try {
-            const res = await axios.post(`${USER_API_ENDPOINT}/Login`, input, {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+            dispatch(setLoading(true));
+            const res = await axios.post(`${USER_API_ENDPOINT}/login`, input, {
+                headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
 
@@ -40,7 +43,9 @@ const Login = () => {
             }
         } catch (error) {
             console.error('Login Error:', error);
-            toast.error('Login Failed!');
+            toast.error(error.response?.data?.message || 'Login Failed!');
+        } finally {
+            dispatch(setLoading(false));
         }
     };
 
@@ -72,33 +77,35 @@ const Login = () => {
                             required
                         />
                     </div>
-                    <div className='flex items-center justify-between mb-4'>
-                        <RadioGroup className="flex items-center space-x-4">
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem
-                                    value="student"
-                                    id="student"
-                                    name="role"
-                                    checked={input.role === 'student'}
-                                    onClick={() => setInput({ ...input, role: 'student' })}
-                                />
-                                <Label htmlFor="student">Student</Label>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem
-                                    value="recruiter"
-                                    id="recruiter"
-                                    name="role"
-                                    checked={input.role === 'recruiter'}
-                                    onClick={() => setInput({ ...input, role: 'recruiter' })}
-                                />
-                                <Label htmlFor="recruiter">Recruiter</Label>
-                            </div>
+                    <div className='mb-4'>
+                        <RadioGroup className="flex space-x-4">
+                            <RadioGroupItem
+                                value="student"
+                                checked={input.role === 'student'}
+                                onClick={() => setInput({ ...input, role: 'student' })}
+                            />
+                            <Label htmlFor="student">Student</Label>
+
+                            <RadioGroupItem
+                                value="recruiter"
+                                checked={input.role === 'recruiter'}
+                                onClick={() => setInput({ ...input, role: 'recruiter' })}
+                            />
+                            <Label htmlFor="recruiter">Recruiter</Label>
                         </RadioGroup>
                     </div>
-                    <Button className='w-full' variant="destructive" type="submit">
-                        Login
-                    </Button>
+
+                    {
+                        loading ?
+                            <Button className="w-full my-4" disabled>
+                                <Loader2 className='mr-2 h-4 w-4 animate-spin' /> Please wait
+                            </Button>
+                            :
+                            <Button className='w-full' variant="destructive" type="submit">
+                                Login
+                            </Button>
+                    }
+
                     <p className="text-center mt-4 text-sm">
                         Don't have an account?{' '}
                         <Link to="/signup" className='text-[#f83532] cursor-pointer font-semibold'>
