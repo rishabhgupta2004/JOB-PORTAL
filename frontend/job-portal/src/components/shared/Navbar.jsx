@@ -8,9 +8,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from '../ui/button'
 import { LogOut, User2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Navbar = () => {
-  const user = false; // Mock user state (change it to false to test the Login/Register)
+ 
+  const {user}=useSelector (store=>store.auth)// Mock user state (change it to false to test the Login/Register)
 
   return (
     <>
@@ -22,9 +24,10 @@ const Navbar = () => {
 
           <div className='flex items-center gap-12'>
             <ul className='flex font-medium items-center gap-5'>
-              <li>Home</li>
-              <li>Jobs</li>
-              <li>Browse</li>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/jobs">Jobs</Link></li>
+              <li><Link to="/browse">Browse</Link></li>
+              
             </ul>
             {
               !user ? (
@@ -58,7 +61,7 @@ const Navbar = () => {
                     <div className='flex flex-col my-2 text-gray-600'>
                       <div className='flex w-fit items-center gap-2 cursor-pointer'>
                         <User2 />
-                        <Button variant="link">View Profile</Button>
+                        <Button variant="link"><Link  to="/profile">View Profile</Link></Button>
                       </div>
                       <div className='flex w-fit items-center gap-2 cursor-pointer'>
                         <LogOut />

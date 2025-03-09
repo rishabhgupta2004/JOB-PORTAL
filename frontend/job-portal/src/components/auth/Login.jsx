@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { USER_API_ENDPOINT } from '@/utils/constant';
 import { toast } from 'sonner';
 import axios from 'axios';
-import { setLoading } from '@/redux/authSlice';
+import { setLoading, setUser } from '@/redux/authSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { Loader2 } from 'lucide-react';
 
@@ -38,6 +38,7 @@ const Login = () => {
             });
 
             if (res.data.success) {
+                dispatch(setUser(res.data.user));
                 navigate('/');
                 toast.success(res.data.message);
             }
