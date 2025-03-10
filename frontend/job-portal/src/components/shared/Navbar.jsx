@@ -7,13 +7,37 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from '../ui/button'
 import { LogOut, User2 } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { USER_API_ENDPOINT } from '@/utils/constant'
+import { toast } from 'sonner'
+import { setUser } from '@/redux/authSlice'
+import axios from 'axios'
+
 
 const Navbar = () => {
  
-  const {user}=useSelector (store=>store.auth)// Mock user state (change it to false to test the Login/Register)
-
+  const {user}=useSelector (store=>store.auth)
+  const dispatch=useDispatch()
+  const navigate=useNavigate()// Mock user state (change it to false to test the Login/Register)
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`${USER_API_ENDPOINT}/logout`, { withCredentials: true });
+  
+      if (res.data.success) {
+        dispatch(setUser(null));
+        navigate("/");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.error(error.message);
+  
+      // Fix: Properly accessing error message
+      const errorMessage = error.response?.data?.message || "Something went wrong!";
+      toast.error(errorMessage);
+    }
+  };
+  
   return (
     <>
       <div className='bg-white shadow-md'>
@@ -65,7 +89,7 @@ const Navbar = () => {
                       </div>
                       <div className='flex w-fit items-center gap-2 cursor-pointer'>
                         <LogOut />
-                        <Button variant="link">Logout</Button>
+                        <Button onClick={logoutHandler} variant="link">Logout</Button>
                       </div>
                     </div>
                   </PopoverContent>

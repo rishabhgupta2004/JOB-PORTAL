@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken";
+import { User } from "../models/user.model.js";
 
-const isAuthenticated = (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
   try {
-    const token = req.cookies.token; // ✅ Correct way to access cookies
+    const token = req.cookies.token;
     if (!token) {
       return res.status(401).json({
         message: "You are not authenticated",
@@ -10,7 +11,7 @@ const isAuthenticated = (req, res, next) => {
       });
     }
 
-    const decode = jwt.verify(token, process.env.SECRET_KEY); // ✅ No need for await
+    const decode = jwt.verify(token, process.env.SECRET_KEY);
     if (!decode) {
       return res.status(401).json({
         message: "Invalid Token",
@@ -18,8 +19,17 @@ const isAuthenticated = (req, res, next) => {
       });
     }
 
-    req.id = decode.userId; // ✅ Assign userId to request object
-    next(); // ✅ Move to the next middleware
+    // Fetch user from database
+    const user = await User.findById(decode.userId).select("-password");
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    req.user = user; // ✅ Store user in req.user
+    next();
   } catch (error) {
     console.log(error);
     return res.status(500).json({
