@@ -16,14 +16,14 @@ import axios from 'axios'
 
 
 const Navbar = () => {
- 
-  const {user}=useSelector (store=>store.auth)
-  const dispatch=useDispatch()
-  const navigate=useNavigate()// Mock user state (change it to false to test the Login/Register)
+
+  const { user } = useSelector(store => store.auth)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()// Mock user state (change it to false to test the Login/Register)
   const logoutHandler = async () => {
     try {
       const res = await axios.get(`${USER_API_ENDPOINT}/logout`, { withCredentials: true });
-  
+
       if (res.data.success) {
         dispatch(setUser(null));
         navigate("/");
@@ -31,13 +31,13 @@ const Navbar = () => {
       }
     } catch (error) {
       console.error(error.message);
-  
+
       // Fix: Properly accessing error message
       const errorMessage = error.response?.data?.message || "Something went wrong!";
       toast.error(errorMessage);
     }
   };
-  
+
   return (
     <>
       <div className='bg-white shadow-md'>
@@ -48,19 +48,30 @@ const Navbar = () => {
 
           <div className='flex items-center gap-12'>
             <ul className='flex font-medium items-center gap-5'>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/jobs">Jobs</Link></li>
-              <li><Link to="/browse">Browse</Link></li>
-              
+              {
+                user && user.role === 'recruiter' ? (
+                  <>
+                    <li><Link to="/admin/companies">Companies</Link></li>
+                    <li><Link to="/admin/jobs">Jobs</Link></li>
+                  </>
+                ) : (
+                  <><li><Link to="/">Home</Link></li>
+                    <li><Link to="/jobs">Jobs</Link></li>
+                    <li><Link to="/browse">Browse</Link></li>  </>
+                )
+
+              }
+
+
             </ul>
             {
               !user ? (
                 <div className='flex gap-4'>
                   <Link to="/Login">
-                  <Button variant='outline' className="bg-blue-700  hover:bg-blue-500 text-white">Login</Button>
+                    <Button variant='outline' className="bg-blue-700  hover:bg-blue-500 text-white">Login</Button>
                   </Link >
                   <Link to="/Signup">
-                  <Button variant='destructive' className="bg-red-600 hover:bg-red-500">Register</Button>
+                    <Button variant='destructive' className="bg-red-600 hover:bg-red-500">Register</Button>
                   </Link>
                 </div>
               ) : (
@@ -83,10 +94,15 @@ const Navbar = () => {
                       </div>
                     </div>
                     <div className='flex flex-col my-2 text-gray-600'>
-                      <div className='flex w-fit items-center gap-2 cursor-pointer'>
-                        <User2 />
-                        <Button variant="link"><Link  to="/profile">View Profile</Link></Button>
-                      </div>
+                      {
+                        user && user.role === 'student' && (
+                          <div className='flex w-fit items-center gap-2 cursor-pointer'>
+                            <User2 />
+                            <Button variant="link"><Link to="/profile">View Profile</Link></Button>
+                          </div>
+                        )
+                      }
+
                       <div className='flex w-fit items-center gap-2 cursor-pointer'>
                         <LogOut />
                         <Button onClick={logoutHandler} variant="link">Logout</Button>
