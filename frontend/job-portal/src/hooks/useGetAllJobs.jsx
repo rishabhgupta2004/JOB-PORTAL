@@ -13,7 +13,7 @@ const useGetAllJobs = () => {
         const fetchAllJobs = async () => {
             setLoading(true);
             try {
-                const res = await axios.get("https://job-portal-8ku4.onrender.com/get?keyword=${searchedQuery}", { withCredentials: true });
+                const res = await axios.get(`https://job-portal-8ku4.onrender.com/get?keyword=${searchedQuery}`, { withCredentials: true });
                 if (res.data.success) {
                     dispatch(setAllJobs(res.data.jobs));
                 }

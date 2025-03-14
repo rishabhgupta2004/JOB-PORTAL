@@ -32,7 +32,7 @@ const Login = () => {
         console.log(input);
         try {
             dispatch(setLoading(true));
-            const res = await axios.post("https://job-portal-8ku4.onrender.com/api/vi/user/login", input, {
+            const res = await axios.post("https://job-portal-8ku4.onrender.com/api/v1/user/login", input, {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true
             });
