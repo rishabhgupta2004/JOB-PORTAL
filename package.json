@@ -4,8 +4,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon backend/index.js",
+   "build": "npm install && npm install --prefix frontend/job-portal && npm run build --prefix frontend/job-portal",
+
+    "start":"nodemon backend/index.js"
+   
   },
   "author": "rishabh gupta",
   "license": "ISC",

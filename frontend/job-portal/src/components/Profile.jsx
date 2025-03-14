@@ -23,7 +23,7 @@ const Profile = () => {
     // Update state when user changes in Redux
     useEffect(() => {
         setProfileData(user);
-        console.log("Profile Updated:", user);  // Debugging
+       
     }, [user]);
 
     return (

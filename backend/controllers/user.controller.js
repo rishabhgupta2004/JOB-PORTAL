@@ -183,9 +183,9 @@ export const updateProfile = async (req, res) => {
 
     // Handle file upload if file exists
     if (req.file) {
-      console.log("Uploaded File:", req.file); // Debugging
+      
       const fileUri = getDataUri(req.file);
-      console.log("File URI:", fileUri); // Debugging
+      
 
       const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
       console.log("Cloudinary Response:", cloudResponse); // Debugging
