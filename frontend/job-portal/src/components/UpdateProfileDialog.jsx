@@ -46,7 +46,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         }
         try {
             setLoading(true);
-            const res = await axios.post(`${USER_API_ENDPOINT}/profile/update`, formData, {
+            const res = await axios.post("https://job-portal-8ku4.onrender.com/profile/update", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 },

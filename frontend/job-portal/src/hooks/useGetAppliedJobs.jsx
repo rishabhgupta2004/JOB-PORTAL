@@ -12,7 +12,7 @@ const useGetAppliedJobs = () => {
 
         const fetchAppliedJobs = async () => {
             try {
-                const res = await axios.get(`${APPLICATION_API_ENDPOINT}/get`, {
+                const res = await axios.get("https://job-portal-8ku4.onrender.com/get", {
                     withCredentials: true,
                     signal: controller.signal, // Attach abort signal
                 });

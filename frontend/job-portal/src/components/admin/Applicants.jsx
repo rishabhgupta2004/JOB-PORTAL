@@ -17,7 +17,7 @@ const Applicants = () => {
 
         const fetchAllApplicants = async () => {
             try {
-                const res = await axios.get(`${APPLICATION_API_ENDPOINT}/${id}/applicants`, {
+                const res = await axios.get("https://job-portal-8ku4.onrender.com/${id}/applicants", {
                     withCredentials: true,
                     signal: controller.signal, // Attach the abort signal
                 });

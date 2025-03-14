@@ -20,7 +20,7 @@ const JobDescription = () => {
 
     const applyJobHandler = async () => {
         try {
-            const res = await axios.get(`${APPLICATION_API_ENDPOINT}/apply/${jobId}`, {withCredentials:true});
+            const res = await axios.get("https://job-portal-8ku4.onrender.com/apply/${jobId}", {withCredentials:true});
             
             if(res.data.success){
                 setIsApplied(true); // Update the local state

@@ -14,7 +14,7 @@ const useGetCompanyById = (companyId) => {
 
         const fetchSingleCompany = async () => {
             try {
-                const res = await axios.get(`${COMPANY_API_ENDPOINT}/get/${companyId}`, {
+                const res = await axios.get("https://job-portal-8ku4.onrender.com/get/${companyId}", {
                     withCredentials: true,
                     signal: controller.signal, // Attach abort signal
                 });
