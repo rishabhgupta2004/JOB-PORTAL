@@ -25,7 +25,7 @@ app.use(cookieParser());
 
 // CORS Configuration
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://job-portal-8ku4.onrender.com",
   credentials: true,
 };
 app.use(cors(corsOptions));
